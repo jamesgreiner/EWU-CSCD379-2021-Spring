@@ -32,7 +32,7 @@ namespace SecretSanta.Web
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello from Web!");
+                    await context.Response.WriteAsync("Welcome to the Web! This code has been updated by James Greiner for the first part of Assignment 1.");
                 });
             });
         }
