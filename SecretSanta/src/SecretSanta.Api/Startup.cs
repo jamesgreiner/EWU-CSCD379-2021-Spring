@@ -32,7 +32,7 @@ namespace SecretSanta.Api
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Welcome to the API project! This code has been updated by James Greiner for the second part of Assignment 1.");
+                    await context.Response.WriteAsync("Hello from API!");
                 });
             });
         }
