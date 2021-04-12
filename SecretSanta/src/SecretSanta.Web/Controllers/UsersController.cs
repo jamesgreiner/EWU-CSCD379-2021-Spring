@@ -15,5 +15,27 @@ namespace SecretSanta.Web.Controllers
         {
             return View(Users);
         }
+
+         public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(UserViewModel ViewModel)
+        {
+            if(ModelState.IsValid)
+            {
+                Users.Add(ViewModel);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(ViewModel);
+           
+        }
+
+        public IActionResult Edit(int id)
+        {
+            return View(Users[id]);
+        }
     }
 }
