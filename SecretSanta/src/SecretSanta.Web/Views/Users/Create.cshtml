@@ -1,6 +1,6 @@
 @model UserViewModel
 
-<form asp-controller="Users" acp-action="Create" method="post">
+<form asp-controller="Users" asp-action="Create" method="post">
     <div>
         <label asp-for="FirstName"></label>:<input type="text" asp-for="FirstName"/>
         <span asp-validation-for="FirstName">First Name is required</span>
