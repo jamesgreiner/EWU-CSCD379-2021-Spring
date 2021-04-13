@@ -4,6 +4,8 @@ namespace SecretSanta.Web.ViewModels
 {
     public class UserViewModel
     {
+        public int ID { get; set; }
+
         [Required]
         [Display(Name="First Name")]
         public string FirstName { get; set; } = "";

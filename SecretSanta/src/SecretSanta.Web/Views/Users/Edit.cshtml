@@ -1,0 +1,16 @@
+@model UserViewModel
+
+<form asp-controller="Users" acp-action="Edit" method="post">
+    <input type="hidden" asp-for="ID">
+    <div>
+        <label asp-for="FirstName"></label>:<input type="text" asp-for="FirstName"/>
+        <span asp-validation-for="FirstName">First Name is required</span>
+    </div>
+
+    <div>
+        <label asp-for="LastName"></label>:<input type="text" asp-for="LastName"/>
+        <span asp-validation-for="LastName">Last Name is required</span>
+    </div>
+
+    <button>Save Changes</button>
+</form>

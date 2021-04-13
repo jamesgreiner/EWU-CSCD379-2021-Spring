@@ -29,13 +29,33 @@ namespace SecretSanta.Web.Controllers
                 Users.Add(ViewModel);
                 return RedirectToAction(nameof(Index));
             }
+
             return View(ViewModel);
-           
         }
 
         public IActionResult Edit(int id)
         {
+            Users[id].ID = id;
             return View(Users[id]);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(UserViewModel ViewModel)
+        {
+            if(ModelState.IsValid)
+            {
+                Users[ViewModel.ID] = ViewModel;
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(ViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            Users.RemoveAt(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
