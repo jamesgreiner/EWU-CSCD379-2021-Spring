@@ -1,0 +1,28 @@
+@model GiftViewModel
+
+<div>
+        <label asp-for="Title"></label>:<input type="text" asp-for="Title"/>
+        <span asp-validation-for="Title">Title is required</span>
+    </div>
+
+    <div>
+        <label asp-for="Description"></label>:<input type="text" asp-for="Description"/>
+        <span asp-validation-for="Description">Description is required</span>
+    </div>
+
+    <div>
+        <label asp-for="Url"></label>:<input type="text" asp-for="Url"/>
+        <span asp-validation-for="Url">URL is required</span>
+    </div>
+
+    <div>
+        <label asp-for="Priority"></label>:<input type="text" asp-for="Priority"/>
+        <span asp-validation-for="Priority">Priority is required</span>
+    </div>
+
+    <div>
+        <label asp-for="UserID"></label>
+        <select asp-for="UserID" asp-items="@(new SelectList(MockData.Users, "ID", "FullName"))">
+            <option>Please select one</option>
+        </select>
+    </div>

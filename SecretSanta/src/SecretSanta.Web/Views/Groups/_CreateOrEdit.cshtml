@@ -1,0 +1,7 @@
+@model GroupViewModel
+
+<input type="hidden" asp-for="ID">
+<div>
+    <label asp-for="GroupName"></label>:<input type="text" asp-for="GroupName"/>
+    <span asp-validation-for="GroupName">Group Name is required</span>
+</div>

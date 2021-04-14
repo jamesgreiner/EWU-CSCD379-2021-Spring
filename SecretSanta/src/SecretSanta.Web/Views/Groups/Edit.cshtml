@@ -1,10 +1,6 @@
 @model GroupViewModel
 
 <form asp-controller="Groups" acp-action="Edit" method="post">
-    <input type="hidden" asp-for="ID">
-    <div>
-        <label asp-for="GroupName"></label>:<input type="text" asp-for="GroupName"/>
-        <span asp-validation-for="GroupName">Group Name is required</span>
-    </div>
+    @await Html.PartialAsync("_CreateOrEdit")
     <button>Update Group</button>
 </form>
