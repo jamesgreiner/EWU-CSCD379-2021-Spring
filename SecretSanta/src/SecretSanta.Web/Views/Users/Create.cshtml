@@ -1,7 +1,10 @@
 @model UserViewModel
 
-<form asp-controller="Users" asp-action="Create" method="post">
-    @await Html.PartialAsync("_CreateOrEdit")
-    <button>Create</button>
-    <a asp-controller="Users" asp-action="Index">Cancel</a>
-</form>
+<section class="m-2">
+    <form asp-controller="Users" asp-action="Create" method="post">
+        @await Html.PartialAsync("_CreateOrEdit")
+        
+        <button class="btn mr-2 mt-2">Create</button>
+        <a class="btn inline-block bg-red-500 mt-2" asp-controller="Users" asp-action="Index">Cancel</a>
+    </form>
+</section>

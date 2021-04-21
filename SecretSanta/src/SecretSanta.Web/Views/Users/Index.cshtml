@@ -1,11 +1,23 @@
 @model List<UserViewModel>
 
+@{
+    ViewBag.Title = "Users";
+}
+
 @{int counter = 0;}
 
-@foreach(var userViewModel in Model) {
-    <section>
-        @userViewModel.FirstName @userViewModel.LastName <a asp-action="Edit" asp-route-id=@counter>Edit</a><form asp-action="Delete" asp-route-id=@counter method="post"><button>X</button></form>
-        @{counter++;}
-    </section>
-}
-<a asp-action="Create">Create</a>
+<section class="sm:grid grid-cols-3">
+    @foreach(var user in Model) 
+    {
+        <section class="rounded-md border-black border-2 m-2">
+            <a asp-controller="Users" asp-action="Edit" asp-route-id=@counter>@user.FirstName @user.LastName</a>
+
+            <form asp-controller="Users" asp-action="Delete" asp-route-id=@counter method="post">
+                <button onclick="return confirm('You are sure you want to delete @user.FirstName @user.LastName. This is permanent and cannot be undone.');"><i class="fas fa-trash-alt"></i></button>
+            </form>
+
+            @{counter++;}
+        </section>
+    }
+</section>
+<a class="btn inline-block ml-2 mt-2" asp-controller="Users" asp-action="Create">Create New User</a>
