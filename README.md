@@ -11,7 +11,7 @@ This assigment will only be modifying the SecretSanta.Web project
   - Instead of "Home" the text for that link should be Secret Santa and the font for this should be a bit larger than the other navigation elements: ✔
   - The navigation should be responsive, which means on a small screen the navigation should be hidden until the user clicks on some type of indicator to expand out the navigation elements: ✔❌
 
-- The page content should have margin around the whole thing so that the text isn't butted up right against the edge of the screen: ✔❌
+- The page content should have margin around the whole thing so that the text isn't butted up right against the edge of the screen: ✔
 
 - The user "home" page should
   - When on a small screen, display all users in a single column (First and Last name): ✔
