@@ -1,39 +1,53 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using SecretSanta.Business;
+using SecretSanta.Data;
 
 namespace SecretSanta.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
+        private IUserManager UserManager { get; }
+        public UsersController(IUserManager userManager)
+        {
+            UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<User> Get()
         {
             return DeleteMe.Users;
         }
 
-        [HttpGet("{index}")]
-        public string Get(int index)
+        [HttpGet("{id}")]
+        public User? Get(int id)
         {
-            
-            return DeleteMe.Users[index];
+            return UserManager.GetItem(id);
         }
 
-        [HttpDelete("{index}")]
-        public void Delete(int index)
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
         {
-            DeleteMe.Users.RemoveAt(index);
+            if (id < 0)
+            {
+                return NotFound();
+            }
+
+            DeleteMe.Users.RemoveAt(id);
+            return Ok();
         }
 
         [HttpPost]
-        public void Post([FromBody] string user)
+        public void Post([FromBody] User user)
         {
             DeleteMe.Users.Add(user);
         }
 
         [HttpPut("{index}")]
-        public void Put(int index, [FromBody] string user)
+        public void Put(int index, [FromBody] User user)
         {
             DeleteMe.Users[index] = user;
         }

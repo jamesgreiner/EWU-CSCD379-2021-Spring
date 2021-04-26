@@ -1,9 +1,6 @@
 @hostname = localhost
-
 @port = 5101
-
 @host = https://{{hostname}}:{{port}}
-
 @contentType = application/json
 
 ###
