@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Business;
 using SecretSanta.Data;
+using SecretSanta.Api.Dto;
 
 namespace SecretSanta.Api.Controllers
 {
@@ -16,17 +17,29 @@ namespace SecretSanta.Api.Controllers
             UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
+
+
         [HttpGet]
         public IEnumerable<User> Get()
         {
             return DeleteMe.Users;
         }
 
+
+
         [HttpGet("{id}")]
-        public User? Get(int id)
+        public ActionResult<User?> Get(int id)
         {
-            return UserManager.GetItem(id);
+            if (id < 0)
+            {
+                return NotFound();
+            }
+        
+            User? returnedUser = UserManager.GetItem(id);
+            return returnedUser;
         }
+
+
 
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
@@ -36,20 +49,48 @@ namespace SecretSanta.Api.Controllers
                 return NotFound();
             }
 
-            DeleteMe.Users.RemoveAt(id);
-            return Ok();
+            if (UserManager.Remove(id))
+            {
+                return Ok();
+            }
+
+            return NotFound();
         }
+
+
 
         [HttpPost]
-        public void Post([FromBody] User user)
+        public ActionResult<User> Post([FromBody] User? user)
         {
-            DeleteMe.Users.Add(user);
+            if (user is null)
+            {
+                return BadRequest();
+            }
+
+            return UserManager.Create(user);
         }
 
-        [HttpPut("{index}")]
-        public void Put(int index, [FromBody] User user)
+
+
+        [HttpPut("{id}")]
+        public ActionResult Put(int id, [FromBody] UpdateUser? updatedUser)
         {
-            DeleteMe.Users[index] = user;
+            if (updatedUser is null)
+            {
+                return BadRequest();
+            }
+            
+            User? foundUser = UserManager.GetItem(id);
+            if (foundUser is not null)
+            {
+                foundUser.FirstName = updatedUser.FirstName;
+                foundUser.LastName = updatedUser.LastName;
+
+                UserManager.Save(foundUser);
+                return Ok();
+            }
+
+            return NotFound();
         }
     }
 }
