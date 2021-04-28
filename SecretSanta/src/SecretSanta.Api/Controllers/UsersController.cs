@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using SecretSanta.Api.Dto;
 using SecretSanta.Business;
 using SecretSanta.Data;
-using SecretSanta.Api.Dto;
+using System;
+using System.Collections.Generic;
 
 namespace SecretSanta.Api.Controllers
 {
@@ -11,10 +11,13 @@ namespace SecretSanta.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private IUserManager UserManager { get; }
-        public UsersController(IUserManager userManager)
+        //private property
+        private IUserRepository UserRepository { get; }
+
+        //constructor
+        public UsersController(IUserRepository userRepository)
         {
-            UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            UserRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
 
@@ -35,7 +38,7 @@ namespace SecretSanta.Api.Controllers
                 return NotFound();
             }
         
-            User? returnedUser = UserManager.GetItem(id);
+            User? returnedUser = UserRepository.GetItem(id);
             return returnedUser;
         }
 
@@ -49,7 +52,7 @@ namespace SecretSanta.Api.Controllers
                 return NotFound();
             }
 
-            if (UserManager.Remove(id))
+            if (UserRepository.Remove(id))
             {
                 return Ok();
             }
@@ -67,7 +70,7 @@ namespace SecretSanta.Api.Controllers
                 return BadRequest();
             }
 
-            return UserManager.Create(user);
+            return UserRepository.Create(user);
         }
 
 
@@ -80,13 +83,16 @@ namespace SecretSanta.Api.Controllers
                 return BadRequest();
             }
             
-            User? foundUser = UserManager.GetItem(id);
+            User? foundUser = UserRepository.GetItem(id);
             if (foundUser is not null)
             {
-                foundUser.FirstName = updatedUser.FirstName;
-                foundUser.LastName = updatedUser.LastName;
-
-                UserManager.Save(foundUser);
+                if (!string.IsNullOrWhiteSpace(updatedUser.FirstName) && !string.IsNullOrWhiteSpace(updatedUser.LastName))
+                {
+                    foundUser.FirstName = updatedUser.FirstName;
+                    foundUser.LastName = updatedUser.LastName;
+                }
+                
+                UserRepository.Save(foundUser);
                 return Ok();
             }
 

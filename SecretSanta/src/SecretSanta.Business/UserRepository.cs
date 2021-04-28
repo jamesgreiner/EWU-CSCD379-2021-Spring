@@ -1,17 +1,19 @@
+using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
-using SecretSanta.Data;
 using System.Linq;
 
 namespace SecretSanta.Business
 {
-    public class UserManager : IUserManager
+    public class UserRepository : IUserRepository
     {
         public User Create(User user)
         {
             DeleteMe.Users.Add(user);
             return user;
         }
+
+
 
         public User? GetItem(int id)
         {
@@ -23,10 +25,14 @@ namespace SecretSanta.Business
             return DeleteMe.Users.FirstOrDefault(x => x.Id==id);
         }
 
+
+
         public ICollection<User> List()
         {
             return DeleteMe.Users;
         }
+
+
 
         public bool Remove(int id)
         {
@@ -39,6 +45,8 @@ namespace SecretSanta.Business
 
             return false;
         }
+
+
 
         public void Save(User user)
         {

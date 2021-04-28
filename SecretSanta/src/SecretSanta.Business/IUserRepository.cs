@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SecretSanta.Data;
+﻿using SecretSanta.Data;
+using System.Collections.Generic;
 
 namespace SecretSanta.Business
 {
