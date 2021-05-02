@@ -1,14 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Web.Data;
 using SecretSanta.Web.ViewModels;
+using SecretSanta.Web.Api;
+using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace SecretSanta.Web.Controllers
 {
     public class UsersController : Controller
     {
-        public IActionResult Index()
+        public IUsersClient Client{ get; }
+
+        public UsersController(IUsersClient client)
         {
-            return View(MockData.Users);
+            Client = client ?? throw new ArgumentNullException(nameof(client));
+        }
+        
+        public async Task<IActionResult> Index()
+        {
+            ICollection<User> users = await Client.GetAllAsync();
+            List<UserViewModel> usersViewModel = new();
+            foreach(User u in users)
+            {
+                usersViewModel.Add(new UserViewModel
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName
+                });
+            }
+            
+            return View(usersViewModel);
         }
 
         public IActionResult Create()
@@ -46,9 +69,10 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            MockData.Users.RemoveAt(id);
+            await Client.DeleteAsync(id);
+            
             return RedirectToAction(nameof(Index));
         }
     }
