@@ -36,7 +36,7 @@ namespace SecretSanta.Api.Tests.Controllers
                 Id = 42
             };
 
-            repository.GetItemUser = foundUser;
+            //repository.GetItemUser = foundUser;
             HttpClient client = factory.CreateClient();
             UpdateUser updateUser = new()
             {

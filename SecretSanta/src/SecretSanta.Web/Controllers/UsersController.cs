@@ -1,3 +1,9 @@
+//must register the generated class using its interface with the DI service
+//must take the generated client as a dependency
+//must use client instead of MockData to get data from the API service
+//must convert between ViewModel classes and API DTO classes as needed
+
+
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Web.Data;
 using SecretSanta.Web.ViewModels;
