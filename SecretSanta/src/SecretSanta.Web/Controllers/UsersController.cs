@@ -40,11 +40,14 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(UserViewModel viewModel)
+        public async Task<IActionResult> Create(UserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                MockData.Users.Add(viewModel);
+                await Client.PostAsync(new Api.User {
+                    FirstName = viewModel.FirstName
+                });
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -57,11 +60,14 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(UserViewModel viewModel)
+        public async Task<IActionResult> Edit(UserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                MockData.Users[viewModel.Id] = viewModel;
+                await Client.PostAsync(new Api.User {
+                    FirstName = viewModel.FirstName
+                });
+
                 return RedirectToAction(nameof(Index));
             }
 
