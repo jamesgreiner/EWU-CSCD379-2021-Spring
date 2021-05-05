@@ -23,6 +23,8 @@ namespace SecretSanta.Web.Controllers
             Client = client ?? throw new ArgumentNullException(nameof(client));
         }
         
+
+
         public async Task<IActionResult> Index()
         {
             ICollection<User> users = await Client.GetAllAsync();
@@ -40,18 +42,23 @@ namespace SecretSanta.Web.Controllers
             return View(usersViewModel);
         }
 
+
+
         public IActionResult Create()
         {
             return View();
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> Create(UserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                await Client.PostAsync(new Api.User {
-                    FirstName = viewModel.FirstName
+                await Client.PostAsync(new User {
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName
                 });
 
                 return RedirectToAction(nameof(Index));
@@ -60,10 +67,14 @@ namespace SecretSanta.Web.Controllers
             return View(viewModel);
         }
 
+
+
         public IActionResult Edit(int id)
-        {
+        {  
             return View(MockData.Users[id]);
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> Edit(UserViewModel viewModel)
@@ -80,11 +91,13 @@ namespace SecretSanta.Web.Controllers
             return View(viewModel);
         }
 
+
+
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             await Client.DeleteAsync(id);
-            
+
             return RedirectToAction(nameof(Index));
         }
     }

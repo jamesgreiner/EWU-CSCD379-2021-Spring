@@ -2,6 +2,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SecretSanta.Api.Dto;
 using SecretSanta.Business;
 using SecretSanta.Data;
 
@@ -13,28 +14,48 @@ namespace SecretSanta.Api.Controllers
     {
         private IUserRepository Repository { get; }
 
+
+
         public UsersController(IUserRepository repository)
         {
             Repository = repository ?? throw new System.ArgumentNullException(nameof(repository));
         }
 
+
+
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IEnumerable<User> Get()
         {
             return Repository.List();
         }
 
+
+
         [HttpGet("{id}")]
-        public ActionResult<User?> Get(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public ActionResult<IdNameUser?> Get(int id)
         {
             User? user = Repository.GetItem(id);
-            if (user is null) return NotFound();
-            return user;
+            if (user is null)
+            {
+                return NotFound();
+            } 
+            
+            IdNameUser dtoUser = new();
+            dtoUser.Id = user.Id;
+            dtoUser.FirstName = user.FirstName;
+            dtoUser.LastName = user.LastName;
+            
+            return dtoUser;
         }
 
+
+
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult Delete(int id)
         {
             if (Repository.Remove(id))
@@ -44,19 +65,28 @@ namespace SecretSanta.Api.Controllers
             return NotFound();
         }
 
+
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
-        public ActionResult<User?> Post([FromBody] User? user)
+        public ActionResult<User?> Post([FromBody] IdNameUser? dtoUser)
         {
-            if (user is null)
+            if (dtoUser is null)
             {
                 return BadRequest();
             }
+
+            User user = new();
+        
             return Repository.Create(user);
         }
 
+
+
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public ActionResult Put(int id, [FromBody] User? user)
         {
             if (user is null)
