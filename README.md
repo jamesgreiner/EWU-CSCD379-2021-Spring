@@ -1,4 +1,11 @@
-﻿
+![](../../workflows/Build/badge.svg)
+![](../../workflows/Deploy/badge.svg)
+
+Project: https://ewu-spring-2021-secretsanta.azurewebsites.net/
+
+Branch: https://github.com/jamesgreiner/EWU-CSCD379-2021-Spring/tree/Assignment6
+
+
 # Assignment 6
 
 ## Overview
