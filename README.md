@@ -1,4 +1,4 @@
-https://github.com/jamesgreiner/EWU-CSCD379-2021-Spring/actions/workflows/AssignmentBuild.yml/badge.svg
+![](../../workflows/AssignmentBuild.yml/badge.svg)
 
 Project: https://ewu-spring-2021-secretsanta.azurewebsites.net/
 
