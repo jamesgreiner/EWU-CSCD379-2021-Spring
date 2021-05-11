@@ -1,4 +1,4 @@
-![](../../workflows/AssignmentBuild.yml/badge.svg)
+![Build](../../workflows/AssignmentBuild.yml/badge.svg)
 
 Project: https://ewu-spring-2021-secretsanta.azurewebsites.net/
 
