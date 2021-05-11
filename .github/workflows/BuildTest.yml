@@ -2,9 +2,9 @@ name: Build&Test
 
 on:
   push:
-    branches: [ Assignment6 ]
+    branches: [ Assignment* ]
   pull_request:
-    branches: [ Assignment6 ]
+    branches: [ Assignment* ]
 
 jobs:
   build:
@@ -16,22 +16,27 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+# Setup .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
           
+# Install npm components and build in production 
       - name: npm
         working-directory: ./SecretSanta/src/SecretSanta.Web/
         run: |
           npm install
           npm run build:prod
-      
+
+# Build project
       - name: Build
         run: dotnet build
         
-      - name: directory
+# Print the current working directory
+      - name: Give current directory
         run: pwd
 
-      - name: Test
+# Run all tests
+      - name: Test Api and Web
         run: dotnet test --no-build
