@@ -1,6 +1,8 @@
+https://github.com/jamesgreiner/EWU-CSCD379-2021-Spring/actions/workflows/AssignmentBuild.yml/badge.svg
+
 Project: https://ewu-spring-2021-secretsanta.azurewebsites.net/
 
-https://github.com/jamesgreiner/EWU-CSCD379-2021-Spring/tree/Assignment6
+Branch :https://github.com/jamesgreiner/EWU-CSCD379-2021-Spring/tree/Assignment6
 
 
 # Assignment 6
