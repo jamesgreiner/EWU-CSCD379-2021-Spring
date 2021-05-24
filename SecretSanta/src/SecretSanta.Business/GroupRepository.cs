@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using SecretSanta.Data;
 
+//A group with with 2 or fewer users should result in an error. This error should be displayed to a user.
+
 namespace SecretSanta.Business
 {
     public class GroupRepository : IGroupRepository
