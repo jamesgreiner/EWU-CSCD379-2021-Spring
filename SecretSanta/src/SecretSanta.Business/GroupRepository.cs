@@ -19,6 +19,11 @@ namespace SecretSanta.Business
             return item;
         }
 
+        public AssignmentResult GenerateGiftAssignment(int id)
+        {
+            
+        }
+
         public Group? GetItem(int id)
         {
             if (MockData.Groups.TryGetValue(id, out Group? user))
