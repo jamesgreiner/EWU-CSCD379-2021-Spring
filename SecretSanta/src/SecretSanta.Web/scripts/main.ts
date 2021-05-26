@@ -12,12 +12,15 @@ import { Group, GroupsClient, User, UsersClient } from '../Api/SecretSanta.Api.C
 
 library.add(fas, far, fab);
 dom.watch();
-
 declare var apiHost : string;
 
-export function setupNav() {
+
+
+export function setupNav() 
+{
     return {
-        toggleMenu() {
+        toggleMenu() 
+        {
             var headerNav = document.getElementById('headerNav');
             if (headerNav) {
                 if (headerNav.classList.contains('hidden')) {
@@ -30,20 +33,28 @@ export function setupNav() {
     }
 }
 
-export function setupUsers() {
+
+
+export function setupUsers() 
+{
     return {
         users: [] as User[],
+
         async mounted() {
             await this.loadUsers();
         },
-        async deleteUser(currentUser: User) {
+
+        async deleteUser(currentUser: User) 
+        {
             if (confirm(`Are you sure you want to delete ${currentUser.firstName} ${currentUser.lastName}?`)) {
                 var client = new UsersClient(apiHost);
                 await client.delete(currentUser.id);
                 await this.loadUsers();
             }
         },
-        async loadUsers() {
+
+        async loadUsers() 
+        {
             try {
                 var client = new UsersClient(`${apiHost}`);
                 this.users = await client.getAll() || [];
@@ -54,10 +65,15 @@ export function setupUsers() {
     }
 }
 
-export function createOrUpdateUser() {
+
+
+export function createOrUpdateUser() 
+{
     return {
         user: {} as User,
-        async create() {
+
+        async create() 
+        {
             try {
                 const client = new UsersClient(apiHost);
                 await client.post(this.user);
@@ -66,7 +82,9 @@ export function createOrUpdateUser() {
                 console.log(error);
             }
         },
-        async update() {
+
+        async update() 
+        {
             try {
                 const client = new UsersClient(apiHost);
                 await client.put(this.user.id, this.user);
@@ -75,7 +93,9 @@ export function createOrUpdateUser() {
                 console.log(error);
             }
         },
-        async loadData() {
+
+        async loadData() 
+        {
             const pathnameSplit = window.location.pathname.split('/');
             const id = pathnameSplit[pathnameSplit.length - 1];
             try {
@@ -88,21 +108,28 @@ export function createOrUpdateUser() {
     }
 }
 
-export function setupGroups() {
+
+
+export function setupGroups() 
+{
     return {
         groups: [] as Group[],
 
         async mounted() {
             await this.loadGroups();
         },
-        async deleteGroup(currentGroup: Group) {
+
+        async deleteGroup(currentGroup: Group) 
+        {
             if (confirm(`Are you sure you want to delete ${currentGroup.name}?`)) {
                 var client = new GroupsClient(apiHost);
                 await client.delete(currentGroup.id);
                 await this.loadGroups();
             }
         },
-        async loadGroups() {
+
+        async loadGroups() 
+        {
             try {
                 var client = new GroupsClient(`${apiHost}`);
                 this.groups = await client.getAll() || [];
@@ -113,15 +140,20 @@ export function setupGroups() {
     }
 }
 
-export function createOrUpdateGroup() {
+
+
+export function createOrUpdateGroup() 
+{
     return {
         group: {} as Group,
         allUsers: [] as User[],
         selectedUserId: 0,
         isEditing: false,
-        generationError: "",
+        receivers: [] as string[],
+        assignmentError: "",
 
-        async create() {
+        async create() 
+        {
             try {
                 const client = new GroupsClient(apiHost);
                 await client.post(this.group);
@@ -133,7 +165,9 @@ export function createOrUpdateGroup() {
         edit() {
             this.isEditing = true;
         },
-        async update() {
+
+        async update() 
+        {
             try {
                 const client = new GroupsClient(apiHost);
                 await client.put(this.group.id, this.group);
@@ -143,33 +177,49 @@ export function createOrUpdateGroup() {
                 console.log(error);
             }
         },
-        async loadData() {
+
+        async loadData() 
+        {
             await this.loadGroup();
             await this.loadUsers();
         },
-        async loadGroup() {
+
+        async loadGroup() 
+        {
             const pathnameSplit = window.location.pathname.split('/');
             const id = pathnameSplit[pathnameSplit.length - 1];
             try {
                 const client = new GroupsClient(apiHost);
                 this.group = await client.get(+id);
-            } catch (error) {
+                if (this.group.assignments.length > 0) 
+                {
+                    this.group.users.forEach((user) => {
+                        this.getReceiverOfGift(user);
+                    });
+                }
+            } catch (error) 
+            {
                 console.log(error);
             }
         },
-        async loadUsers() {
+
+        async loadUsers() 
+        {
             try {
                 var client = new UsersClient(apiHost);
                 this.allUsers = await client.getAll() || [];
                 var index = this.allUsers.findIndex(x => true);
-                if (index >= 0) {
+                if (index >= 0) 
+                {
                     this.selectedUserId = this.allUsers[index].id;
                 }
             } catch (error) {
                 console.log(error);
             }
         },
-        async removeFromGroup(currentGroup: Group, user: User) {
+
+        async removeFromGroup(currentGroup: Group, user: User) 
+        {
             if (confirm(`Are you sure you want to remove ${user.firstName} ${user.lastName} from ${currentGroup.name}?`)) {
                 try {
                     var client = new GroupsClient(apiHost);
@@ -180,7 +230,9 @@ export function createOrUpdateGroup() {
                 await this.loadGroup();
             }
         },
-        async addToGroup(currentGroupId: number) {
+
+        async addToGroup(currentGroupId: number) 
+        {
             if (this.selectedUserId <= 0) return;
             try {
                 var client = new GroupsClient(apiHost);
@@ -189,6 +241,30 @@ export function createOrUpdateGroup() {
                 console.log(error);
             }
             await this.loadGroup();
+        },
+
+        async assignUsersWithinGroup(currentGroupId: number) {
+            
+
+            
+        },
+        
+        getReceiverOfGift(user: User) 
+        {
+            try {
+                if (this.group.assignments.length > 0) 
+                {
+                    this.group.assignments.forEach((a) => {
+                        // for any giver-receiver pair, the name cannot be the same
+                        if (a.giver!.firstName == user.firstName && a.giver!.lastName == user.lastName) 
+                        {
+                            this.receivers[user.id] = a.receiver!.firstName + " " + a.receiver!.lastName;
+                        }
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 }
